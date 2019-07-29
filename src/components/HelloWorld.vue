@@ -41,7 +41,7 @@
                                         <router-link to="/Products">
                                             <button type="submit" class="btn submit-btn">Iniciar</button>
                                         </router-link>
-                                         <router-link to="/Products">
+                                         <router-link to="/storeForm">
                                             <button type="submit" class="btn submit-btn2">Registrar Tienda</button>
                                         </router-link>
                                     </div>
@@ -153,8 +153,8 @@
         padding: 8px;
         color: white;
         font-family: 'Montserrat', sans-serif;
-        font-weight: 300;
-        font-size: 15px;
+        font-weight: 400;
+        font-size: 13px;
         letter-spacing: 1px;
         width: 200px;
         -webkit-box-shadow: 0 8px 6px -6px black;
@@ -169,8 +169,8 @@
         padding: 8px;
         color: white;
         font-family: 'Montserrat', sans-serif;
-        font-weight: 300;
-        font-size: 15px;
+        font-weight: 400;
+        font-size: 13px;
         letter-spacing: 1px;
         width: 200px;
         -webkit-box-shadow: 0 8px 6px -6px black;

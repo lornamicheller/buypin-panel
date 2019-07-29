@@ -8,8 +8,11 @@
 
             <div class="collapse navbar-collapse" id="navbarTogglerDemo02">
                 <ul class="navbar-nav mr-auto mt-2 mt-lg-0">
-                    <li class="nav-item">
+                    <!-- <li class="nav-item">
                         <router-link class="nav-link active" to="/Products"><i class="fas fa-wine-bottle icon3"></i>Productos</router-link>
+                    </li> -->
+                     <li class="nav-item">
+                        <router-link class="nav-link active" to="/adminStores"><i class="fas fa-home icon3"></i>Tiendas</router-link>
                     </li>
                     <li class="nav-item">
                         <router-link class="nav-link" to="/calendar" style="color: #FD5440 !important"><i class="icon3 fas fa-align-left"></i>Categorías</router-link>
@@ -20,6 +23,9 @@
                     <li class="nav-item">
                         <router-link class="nav-link" to="/Waitlist"><i class="fas fa-map-marker-alt icon3"></i>Zipcodes / Áreas</router-link>
                     </li>
+                        <li class="nav-item">
+                        <router-link class="nav-link" to="/adminDrivers"><i class="fas fa-users icon3"></i>Conductores</router-link>
+                    </li>
                     <li class="nav-item">
                         <router-link class="nav-link" to="/"><i class="fas fa-sign-out-alt icon3"></i>Logout</router-link>
                     </li>
@@ -29,7 +35,7 @@
 
         <div class="container-fluid">
             <h1 class="product-title">Categorías</h1>
-            <button type="button" class="btn btn-primary add-btn" data-toggle="modal" data-target="#exampleModalCenter"><i class="fas fa-plus" style="margin-right: 10px;"></i>Crear categoría</button>
+            <button type="button" class="btn btn-primary add-btn disabled" data-toggle="modal" data-target="#exampleModalCenter"><i class="fas fa-plus" style="margin-right: 10px;"></i>Crear categoría</button>
         </div>
 
         <div class="container-fluid" style="padding: 0;">

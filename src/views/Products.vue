@@ -12,13 +12,13 @@
                         <router-link class="nav-link active" to="/Products" style="color: #FD5440 !important"><i class="fas fa-wine-bottle icon3"></i>Productos</router-link>
                     </li>
                     <li class="nav-item">
-                        <router-link class="nav-link" to="/calendar"><i class="icon3 fas fa-align-left"></i>Categorías</router-link>
+                        <router-link class="nav-link" to="/subCategory"><i class="icon3 fas fa-align-left"></i>Sub- Categorías</router-link>
                     </li>
                     <li class="nav-item">
-                        <router-link class="nav-link" to="/PatientsInfo"><i class="fas fa-align-left icon3"></i>Órdenes</router-link>
+                        <router-link class="nav-link" to="/storeOrders"><i class="fas fa-align-left icon3"></i>Órdenes</router-link>
                     </li>
                     <li class="nav-item">
-                        <router-link class="nav-link" to="/Waitlist"><i class="fas fa-map-marker-alt icon3"></i>Zipcodes / Áreas</router-link>
+                        <router-link class="nav-link" to="/storeProfile"><i class="fas fa-map-marker-alt icon3"></i>Perfil de Tienda</router-link>
                     </li>
                     <li class="nav-item">
                         <router-link class="nav-link" to="/"><i class="fas fa-sign-out-alt icon3"></i>Logout</router-link>
@@ -116,26 +116,17 @@
 
                                 <div class="dropdown">
                                     <div class="form-group">
-                                        <label class="form-label" for="exampleFormControlSelect1">Categorías</label>
+                                        <label class="form-label" for="exampleFormControlSelect1">Sub-categorías</label>
                                         <select class="form-control category" style="font-family: 'Montserrat', sans-serif; font-size: 13px;" id="exampleFormControlSelect1">
                                             <option class="title-category"> </option>
-                                            <option class="title-category">Auto Parts</option>
-                                            <option class="title-category">Bebidas Alcohólicas</option>
-                                            <option class="title-category">Clothing</option>
-                                            <option class="title-category">Convinience Store</option>
-                                            <option class="title-category">Farmacia</option>
-                                            <option class="title-category">Ferretería</option>
-                                            <option class="title-category">Foodtruck</option>
-                                            <option class="title-category">Panadería</option>
-                                            <option class="title-category">Restaurantes</option>
+                                            <option class="title-category">Alcohol</option>
+                                            <option class="title-category">Higiene</option>
+                                            <option class="title-category">Refrigerios</option>
+                                            <option class="title-category">Hogar</option>
                                         </select>
                                     </div>
+                                </div>
 
-                                </div>
-                                <div class="category">
-                                    <label class="form-label" for="exampleInputEmail1">Sub-Categorías</label>
-                                    <input type="text" class="form-control modal-form" aria-describedby="basic-addon1">
-                                </div>
 
                                     <div class="input-group mb-3" style="margin-top: 20px;">
                                         <div class="custom-file">
@@ -172,7 +163,7 @@
     }
 </script>
 
-<style scoped>
+<style>
     .navbar,
     .navbar-expand-lg,
     .navbar-light,

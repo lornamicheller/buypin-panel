@@ -442,7 +442,7 @@
     }
 </script>
 
-<style>
+<style scoped>
     .navbar,
     .navbar-expand-lg,
     .navbar-light,

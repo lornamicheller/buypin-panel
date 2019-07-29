@@ -67,5 +67,77 @@ export default new Router({
       // which is lazy-loaded when the route is visited.
       component: () => import(/* webpackChunkName: "about" */ './views/storeForm.vue'),
     },
+    {
+      path: '/adminStores',
+      name: 'adminStores',
+      // route level code-splitting
+      // this generates a separate chunk (about.[hash].js) for this route
+      // which is lazy-loaded when the route is visited.
+      component: () => import(/* webpackChunkName: "about" */ './views/adminStores.vue'),
+    },
+    {
+      path: '/acceptStore',
+      name: 'acceptStore',
+      // route level code-splitting
+      // this generates a separate chunk (about.[hash].js) for this route
+      // which is lazy-loaded when the route is visited.
+      component: () => import(/* webpackChunkName: "about" */ './views/acceptStore.vue'),
+    },
+    {
+      path: '/adminDrivers',
+      name: 'adminDrivers',
+      // route level code-splitting
+      // this generates a separate chunk (about.[hash].js) for this route
+      // which is lazy-loaded when the route is visited.
+      component: () => import(/* webpackChunkName: "about" */ './views/adminDrivers.vue'),
+    },
+    {
+      path: '/acceptDrivers',
+      name: 'acceptDrivers',
+      // route level code-splitting
+      // this generates a separate chunk (about.[hash].js) for this route
+      // which is lazy-loaded when the route is visited.
+      component: () => import(/* webpackChunkName: "about" */ './views/acceptDrivers.vue'),
+    },
+    {
+      path: '/storeOrders',
+      name: 'storeOrders',
+      // route level code-splitting
+      // this generates a separate chunk (about.[hash].js) for this route
+      // which is lazy-loaded when the route is visited.
+      component: () => import(/* webpackChunkName: "about" */ './views/storeOrders.vue'),
+    },
+    {
+      path: '/subCategory',
+      name: 'subCategory',
+      // route level code-splitting
+      // this generates a separate chunk (about.[hash].js) for this route
+      // which is lazy-loaded when the route is visited.
+      component: () => import(/* webpackChunkName: "about" */ './views/subCategory.vue'),
+    },
+    {
+      path: '/driversProfile',
+      name: 'driversProfile',
+      // route level code-splitting
+      // this generates a separate chunk (about.[hash].js) for this route
+      // which is lazy-loaded when the route is visited.
+      component: () => import(/* webpackChunkName: "about" */ './views/driversProfile.vue'),
+    },
+    {
+      path: '/acceptStores',
+      name: 'acceptStores',
+      // route level code-splitting
+      // this generates a separate chunk (about.[hash].js) for this route
+      // which is lazy-loaded when the route is visited.
+      component: () => import(/* webpackChunkName: "about" */ './views/acceptStores.vue'),
+    },
+    {
+      path: '/storeProfile',
+      name: 'storeProfile',
+      // route level code-splitting
+      // this generates a separate chunk (about.[hash].js) for this route
+      // which is lazy-loaded when the route is visited.
+      component: () => import(/* webpackChunkName: "about" */ './views/storeProfile.vue'),
+    },
   ],
 });
