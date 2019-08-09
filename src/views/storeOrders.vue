@@ -21,7 +21,7 @@
                         <router-link class="nav-link" to="/storeProfile"><i class="fas fa-map-marker-alt icon3"></i>Perfil de Tienda</router-link>
                     </li>
                     <li class="nav-item">
-                        <router-link class="nav-link" to="/"><i class="fas fa-sign-out-alt icon3"></i>Logout</router-link>
+                        <button class="logout" @click="logOut()"><i class="fas fa-sign-out-alt icon3"></i>Logout</button>
                     </li>
                 </ul>
             </div>
@@ -32,27 +32,28 @@
             <table class="table table-dark">
                 <thead>
                     <tr>
-                        <th class="table-title" scope="col">#</th>
+                        <!-- <th class="table-title" scope="col">#</th> -->
                         <th class="table-title" scope="col">Email Cliente</th>
                         <th class="table-title" scope="col">Fecha de compra</th>
                         <th class="table-title" scope="col">Nombre de cliente</th>
                         <th class="table-title" scope="col">Teléfono de cliente</th>
-                        <th class="table-title" scope="col">Actions</th>
+                        <th class="table-title" scope="col">Acción</th>
                     </tr>
                 </thead>
                 <tbody>
-                    <tr>
-                        <th class="table-content" scope="row">1</th>
-                        <td class="table-content">email@test.com</td>
-                        <td class="table-content">1 - Agosto - 19</td>
-                        <td class="table-content">Jane Doe</td>
-                        <td class="table-content">787-456-5353</td>
+                    <tr v-for="ords in orders" :key="ords">
+                        <!-- <th class="table-content" scope="row">1</th> -->
+                        <td class="table-content">{{ords.get('user').get('username')}}</td>
+                        <td class="table-content">{{ords.get('date')}}</td>
+                        <td class="table-content">{{ords.get('user').get('fullName')}}</td>
+                        <td class="table-content">{{ords.get('user').get('phone')}}</td>
+                        <!-- <td v-if="query2.include('user') == null" class="table-content">Telefono no disponible</td> -->
                         <td class="table-content">
-                            <button type="button" data-toggle="modal" data-target="#exampleModalCenter" class="see-btn">Ver</button>
-                            <button type="button" class="delete-btn">Borrar</button>
+                            <button @click="seeOrder(ords)" type="button" data-toggle="modal" data-target="#exampleModalCenter" class="see-btn">Ver</button>
+                            <button @click="deleteItem(ords)" type="button" class="delete-btn">Borrar</button>
                         </td>
                     </tr>
-                    <tr>
+                    <!-- <tr>
                         <th class="table-content" scope="row">2</th>
                         <td class="table-content">email@test.com</td>
                         <td class="table-content">1 - Agosto - 19</td>
@@ -62,8 +63,8 @@
                             <button type="button" data-toggle="modal" data-target="#exampleModalCenter" class="see-btn">Ver</button>
                             <button type="button" class="delete-btn">Borrar</button>
                         </td>
-                    </tr>
-                    <tr>
+                    </tr> -->
+                    <!-- <tr>
                         <th class="table-content" scope="row">3</th>
                         <td class="table-content">email@test.com</td>
                         <td class="table-content">1 - Agosto - 19</td>
@@ -73,7 +74,7 @@
                             <button type="button" data-toggle="modal" data-target="#exampleModalCenter" class="see-btn">Ver</button>
                             <button type="button" class="delete-btn">Borrar</button>
                         </td>
-                    </tr>
+                    </tr> -->
                 </tbody>
             </table>
         </div>
@@ -90,49 +91,49 @@
                     </div>
                     <div class="modal-body">
                         <h1 class="modal-title-address">Dirección</h1>
-                        <p class="address-info"><b>Address:</b> Angora Central Park</p>
-                        <p class="address-info"><b>Ciudad:</b> Aguadilla</p>
-                        <p class="address-info"><b>Zipcode:</b> 00603</p>
+                        <p class="address-info"><b>Dirección:</b>{{address}}</p>
+                        <p class="address-info"><b>Ciudad:</b>{{city}}</p>
+                        <p class="address-info"><b>Zipcode:</b>{{zipcode}}</p>
                     </div>
                      <div class="modal-body">
                         <h1 class="modal-title-address">Información de Pago</h1>
                         <p class="address-info"><b>Tarjeta:</b> Visa</p>
-                        <p class="address-info"><b>Fecha de vencimiento:</b> 1123</p>
-                        <p class="address-info"><b>Nombre en tarjeta:</b> Jane Doe</p>
+                        <!-- <p class="address-info"><b>Fecha de vencimiento:</b> 1123</p> -->
+                        <p class="address-info"><b>Nombre en tarjeta:</b> {{name}}</p>
                         <p class="address-info"><b>Número de referencia:</b> 763673</p>
-                        <p class="address-info"><b>Total:</b> $11.63</p>
+                        <p class="address-info"><b>Total:</b> ${{total}}</p>
                     </div>
                     <div class="modal-body" style="height: 300px; overflow: scroll;">
                         <div class="row justify-content-center">
-                            <div class="col-6" style="margin-bottom: 20px;">
-                                <img class="center-img" src="../assets/032731.jpg" width="100px" height="100px">
-                                <p class="address-info2"><b>Nombre de producto:</b> Coca Cola</p>
-                                <p class="address-info2"><b>Precio:</b> $1.63</p>
-                                <p class="address-info2"><b>Cantidad de compra:</b> 1</p>
+                            <div v-for="item in data" :key="item" class="col-6" style="margin-bottom: 20px;">
+                                <img class="center-img" :src="item.prodImage" width="100px" height="100px">
+                                <p class="address-info2"><b>Nombre de producto:</b> {{item.prodName}}</p>
+                                <p class="address-info2"><b>Precio:</b> ${{item.originalPrice}}</p>
+                                <p class="address-info2"><b>Cantidad de compra:</b> {{item.quantityNumber}}</p>
                             </div>
-                            <div class="col-6">
+                            <!-- <div class="col-6">
                                 <img class="center-img" src="../assets/19crimes.jpg" width="100px" height="100px">
                                 <p class="address-info2"><b>Nombre de producto:</b> Coca Cola</p>
                                 <p class="address-info2"><b>Precio:</b> $1.63</p>
                                 <p class="address-info2"><b>Cantidad de compra:</b> 1</p>
-                            </div>
-                            <div class="col-6">
+                            </div> -->
+                            <!-- <div class="col-6">
                                 <img class="center-img" src="../assets/adobo.jpeg" width="100px" height="100px">
                                 <p class="address-info2"><b>Nombre de producto:</b> Coca Cola</p>
                                 <p class="address-info2"><b>Precio:</b> $1.63</p>
                                 <p class="address-info2"><b>Cantidad de compra:</b> 1</p>
-                            </div>
-                            <div class="col-6">
+                            </div> -->
+                            <!-- <div class="col-6">
                                 <img class="center-img" src="../assets/montes.jpg" width="100px" height="100px">
                                 <p class="address-info2"><b>Nombre de producto:</b> Coca Cola</p>
                                 <p class="address-info2"><b>Precio:</b> $1.63</p>
                                 <p class="address-info2"><b>Cantidad de compra:</b> 1</p>
-                            </div>
+                            </div> -->
                         </div>
                     </div>
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-dismiss="modal" style="font-family: 'Montserrat', sans-serif; font-size: 13px; height: 34px; background: #FFC93A; border: 0;">Close</button>
-                        <button type="button" class="btn btn-primary" style="font-family: 'Montserrat', sans-serif; font-size: 13px; height: 34px; background: #FD5440; border: 0;">Save changes</button>
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal" style="font-family: 'Montserrat', sans-serif; font-size: 13px; height: 34px; background: #FFC93A; border: 0;">Cerrar</button>
+                        <button type="button" class="btn btn-primary" style="font-family: 'Montserrat', sans-serif; font-size: 13px; height: 34px; background: #FD5440; border: 0;">Guardar Cambios</button>
                     </div>
                 </div>
             </div>
@@ -142,11 +143,98 @@
 </template>
 
 <script>
+import Parse from 'parse'
   export default {
     data() {
       return {
+          orders:null,
+
+          // data
+
+          address:'',
+          city: '',
+          zipcode: '',
+          card: '',
+          name:'',
+          referenceNumber:'',
+          total: '',
+          data:null,
+
+
       
       }
+    },mounted: function() {
+
+         if(Parse.User.current() == null)
+            {
+                this.$router.push('/HelloWorld');
+            }
+      console.log(this.user);
+      this.gettingOrders();
+      // this.createProducts();
+    },
+    methods:
+    {
+        gettingOrders()
+        {
+            
+             Parse.Cloud.run('getOrders', { //get the user store
+                employeeId: Parse.User.current().id,
+                }).then (result => {
+                console.log(result);
+                this.orders = result;
+
+            }, (error) => {
+                console.log(error);
+            });
+        },
+         logOut() {
+            Parse.User.logOut().then((resp) => {
+            console.log('Logged out successfully', resp);
+            // this.openPage();
+             this.$router.push("/"); 
+            }, err => {
+            console.log('Error logging out', err);
+
+
+            });
+         },
+
+        seeOrder(order)
+        {
+            this.data = [];
+            console.log(order);
+            //address
+            this.address = order.get("address").get("Address");
+            console.log(this.address);
+            this.city = order.get("address").get("city");
+            console.log(this.city);
+            this.zipcode = order.get("address").get("zipcode");
+            console.log(this.zipcode);
+
+            //card
+
+           this.name = order.get("user").get("fullName");
+           console.log(this.name);
+           this.total = order.get("orderTotal");
+           console.log(this.total);
+
+           this.data = order.get('items');
+           console.log(this.data);
+            
+        },
+
+        deleteItem(item)
+        {
+            console.log("Item", item);
+            item.destroy().then((result)=>
+            {
+                console.log("Destroy");
+                this.gettingOrders();
+
+            });
+        }
+
     },
   }
 </script>
@@ -244,6 +332,18 @@
     .modal-title-address {
         font-size: 15px;
         font-family: 'Montserrat', sans-serif;
+    }
+    .logout
+    {
+      background-color: #1e1e1e !important;
+      border-color: #1e1e1e !important;;
+      color:white;
+      margin-top: 5px;
+    }
+
+    .logout:hover{
+      color: #FD5440 !important;
+        transition: .5s;
     }
 
     .address-info {

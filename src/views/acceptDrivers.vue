@@ -43,23 +43,23 @@
             <table class="table table-hover table-striped">
                 <thead>
                     <tr>
-                        <th class="header" scope="col">#</th>
+                        <!-- <th class="header" scope="col">#</th> -->
                         <th class="header" scope="col">Nombre</th>
                         <th class="header" scope="col">Actions</th>
                     </tr>
                 </thead>
                 <tbody>
-                    <tr>
-                        <th class="header" scope="row">1</th>
-                        <td class="content">Luisa Santiago</td>
+                    <tr v-for="driver in driversRequest" :key="driver">
+                        <!-- <th class="header" scope="row">1</th> -->
+                        <td class="content">{{driver.get('fullName')}}</td>
                         <td class="content">
-                            <router-link to="/driversProfile">
-                                <button type="button" class="see-btn">Ver</button>
-                            </router-link>
-                            <button type="button" class="delete-btn">Aprovar</button>
+               
+                                <button @click="viewInfo(driver)" type="button" class="see-btn">Ver</button>
+                            
+                            <button @click="approved(driver)" type="button" class="delete-btn">Aprovar</button>
                         </td>
                     </tr>
-                    <tr>
+                    <!-- <tr>
                         <th class="header" scope="row">2</th>
                         <td class="content">John Ramos</td>
                         <td class="content">
@@ -78,7 +78,7 @@
                             </router-link>
                             <button type="button" class="delete-btn">Aprovar</button>
                         </td>
-                    </tr>
+                    </tr> -->
                 </tbody>
             </table>
         </div>
@@ -87,12 +87,55 @@
 </template>
 
 <script>
+import Parse from 'parse'
     export default {
         data() {
             return {
-
+                driversRequest:null
             }
         },
+        mounted: function()
+        {
+            if(Parse.User.current() == null)
+            {
+                this.$router.push('/HelloWorld');
+            }
+            this.getDriverRequest();
+
+        },
+        methods: 
+        {
+            getDriverRequest()
+            {
+                Parse.Cloud.run('getDriverRequest', { //get the user store
+                }).then (result => {
+                // console.log(result);
+                this.driversRequest = result;
+                console.log(this.driversRequest);
+                }, (error) => {
+                console.log(error);
+                });
+            },
+             viewInfo(data)
+            {
+                this.$router.push({ name: 'driversProfile', params: { data } });
+            },
+
+            approved(data)
+            {
+                console.log(data);
+
+               Parse.Cloud.run('acceptDriver', { //get the user store
+                userId: data.id
+                }).then (result => {
+                    console.log(result);
+                    this.getDriverRequest();
+                }, (error) => {
+                console.log(error);
+                });
+
+            }
+        }
     }
 </script>
 

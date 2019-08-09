@@ -27,6 +27,9 @@
                         <router-link class="nav-link" to="/adminDrivers"><i class="fas fa-users icon3"></i>Conductores</router-link>
                     </li>
                     <li class="nav-item">
+                        <router-link class="nav-link" to="/deliverySchedule"><i class="fas fa-align-left icon3"></i>Schedule Fee</router-link>
+                    </li>
+                    <li class="nav-item">
                         <router-link class="nav-link" to="/"><i class="fas fa-sign-out-alt icon3"></i>Logout</router-link>
                     </li>
                 </ul>
@@ -41,25 +44,25 @@
         <div class="container-fluid" style="padding: 0;">
             <table class="table table-hover table-dark" style="margin-bottom: 0;">
                 <thead>
-                    <tr>
-                        <th class="title-table" scope="col">#</th>
+                    <tr >
+                        <!-- <th class="title-table" scope="col">#</th> -->
                         <th class="title-table" scope="col">Nombre</th>
                         <th class="title-table" scope="col">Imagen de Categoría</th>
                         <th class="title-table" scope="col">Borrar Categoría</th>
                     </tr>
                 </thead>
                 <tbody>
-                    <tr>
-                        <th class="table-content" scope="row">1</th>
-                        <th class="table-content">Auto Parts</th>
+                    <tr v-for="store in categories" :key="store">
+                        <!-- <th class="table-content" scope="row">1</th> -->
+                        <th class="table-content">{{store.get('name')}}</th>
                         <th class="table-content">
-                            <img class="category-img" src="../assets/autopart.png">
+                            <img class="category-img" :src="store.get('categoryImg').url()">
                         </th>
                         <td class="table-content">
-                            <button type="button" class="btn btn-primary delete-btn">Borrar</button>
+                            <button @click="deleteItem(store)" type="button" class="btn btn-primary delete-btn">Borrar</button>
                         </td>
                     </tr>
-                    <tr>
+                    <!-- <tr>
                         <th class="table-content" scope="row">2</th>
                         <th class="table-content">Bebidas Alcohólicas</th>
                         <th class="table-content">
@@ -143,7 +146,7 @@
                         <td class="table-content">
                             <button type="button" class="btn btn-primary delete-btn">Borrar</button>
                         </td>
-                    </tr>
+                    </tr> -->
                 </tbody>
             </table>
         </div>
@@ -163,12 +166,12 @@
                             <div class="col-12">
                                 <div class="category">
                                     <label class="form-label" for="exampleInputEmail1">Nombre</label>
-                                    <input type="text" class="form-control category modal-form" aria-describedby="basic-addon1">
+                                    <input v-model="categoryName" type="text" class="form-control category modal-form" aria-describedby="basic-addon1">
                                 </div>
 
                                 <div class="input-group mb-3" style="margin-top: 20px;">
                                     <div class="custom-file">
-                                        <input type="file" class="custom-file-input" id="inputGroupFile02">
+                                        <input @change="onFileSelected"   type="file" class="custom-file-input" id="inputGroupFile02">
                                         <label class="custom-file-label" for="inputGroupFile02" style="font-family: 'Montserrat', sans-serif; font-size: 13px;">Choose file</label>
                                     </div>
                                     <div class="input-group-append">
@@ -181,7 +184,7 @@
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-dismiss="modal" style="font-family: 'Montserrat', sans-serif; font-size: 13px; height: 34px; background: #FFC93A; border: 0;">Close</button>
-                        <button type="button" class="btn btn-primary" style="font-family: 'Montserrat', sans-serif; font-size: 13px; height: 34px; background: #FD5440; border: 0;">Save changes</button>
+                        <button @click="createCategory" type="button" class="btn btn-primary" style="font-family: 'Montserrat', sans-serif; font-size: 13px; height: 34px; background: #FD5440; border: 0;">Save changes</button>
                     </div>
                 </div>
             </div>
@@ -192,12 +195,110 @@
 </template>
 
 <script>
+import Parse from 'parse'
     export default {
         data() {
                 return {
+                    categories:null,
+                    categoryName:null,
+                    categoryImg:null
 
                 }
             },
+            mounted: function()
+            {
+                if(Parse.User.current() == null)
+                {
+                this.$router.push('/HelloWorld');
+                }
+                this.getCategorys();
+            },
+            methods:
+            {
+                getCategorys()
+                {
+                     Parse.Cloud.run('getCategories', { //get the user store
+                    }).then (result => {
+                    // console.log(result);
+                    this.categories = result;
+                    console.log(this.categories);
+                    }, (error) => {
+                    console.log(error);
+                    });
+                },
+                deleteItem(data)
+                {
+                    console.log(data);
+
+                    data.destroy().then(result =>
+                    {
+                        console.log("delete");
+                        this.getCategorys();
+                    })
+                },
+
+                createCategory()
+                {
+                    console.log("Entrando a create caregory");
+                     Parse.Cloud.run('createCategory', { //get the user store
+                     categoryName: this.categoryName,
+                     categoryImg: this.categoryImg
+                    }).then (result => {
+                        console.log(result);
+                        this.getCategorys();
+                    }, (error) => {
+                    console.log(error);
+                    });
+                    
+                },
+
+                onFileSelected(event)
+                {
+
+
+                    var self = this;
+                    const toBase64 = file => new Promise((resolve, reject) => {
+                    const reader = new FileReader();
+                    reader.readAsDataURL(file);
+                    reader.onload = () => resolve(reader.result);
+                    reader.onerror = error => reject(error);
+                });
+
+                async function Main() 
+                {
+                    const file = document.querySelector('.custom-file-input').files[0];
+                    
+                    self.categoryImg =  await toBase64(file);
+                    console.log(self.categoryImg);
+
+                    const base64Image = self.categoryImg;
+                    const name = 'photo.jpeg';
+                    const parseFile = new Parse.File(name, {
+                            base64: base64Image
+                        });
+                        // convierte la foto a base64
+                        parseFile.save().then((savedFile) => {
+                            console.log('file saved:' + savedFile);
+
+                            self.categoryImg = savedFile;
+                            console.log(self.categoryImg.url());
+                            // this.savedPhoto = savedFile;
+
+                        }, (err) => {
+                            console.log('error grabando file: ' + err);
+                            alert(err);
+                        });
+
+                        console.log(self.picture);
+
+                }
+
+                Main();
+
+                    }
+
+
+            }
 
     }
 </script>

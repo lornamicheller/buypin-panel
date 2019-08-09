@@ -34,12 +34,12 @@
             <div class="row justify-content-center">
                 <div class="col-14" style="padding: 0; background: white; ">
                     <div class="card" style=" border-top-left-radius: 0; border-top-right-radius: 0; border: 0;">
-                        <img src="../assets/stores.jpg" class="card-img-top" style="border-top-left-radius: 0; border-top-right-radius: 0; width: 600px; margin-top: 70px;">
+                        <img :src="picture" class="card-img-top" style="border-top-left-radius: 0; border-top-right-radius: 0; width: 600px; margin-top: 70px;">
                         <div class="card-body">
-                          <h3 class="store-name"><span style="font-weight: 700;">Nombre de tienda: </span>El Colmado Don Vicente</h3>
-                          <h3 class="store-name"><span style="font-weight: 700;">Correo electrónico de tienda: </span>elcolmado@test.com</h3>
-                          <h3 class="store-name"><span style="font-weight: 700;">Teléfono de tienda: </span>787-763-0303</h3>
-                          <h3 class="store-name"><span style="font-weight: 700;">Categoría: </span>Alcohol</h3>
+                          <h3 class="store-name"><span style="font-weight: 700;">Nombre de tienda: </span>{{storeName}}</h3>
+                          <h3 class="store-name"><span style="font-weight: 700;">Correo electrónico de tienda: </span>{{email}}</h3>
+                          <h3 class="store-name"><span style="font-weight: 700;">Teléfono de tienda: </span>{{phoneNumber}}</h3>
+                          <h3 class="store-name"><span style="font-weight: 700;">Categoría: </span>{{category}}</h3>
 
 
                             <table class="table table-striped table-hover">
@@ -53,38 +53,52 @@
                                 <tbody>
                                     <tr>
                                         <td class="table-content">Domingo</td>
-                                        <td class="table-content">12:00AM</td>
-                                        <td class="table-content">12:00PM</td>
+                                        <td v-if="SundayAM != null" class="table-content">{{SundayAM}}</td>
+                                        <td v-if="SundayAM == null" class="table-content">---</td>
+                                        <td v-if="SundayPM != null" class="table-content">{{SundayPM}}</td>
+                                        <td v-if="SundayPM == null" class="table-content">---</td>
                                     </tr>
                                    <tr>
                                         <td class="table-content">Lunes</td>
-                                        <td class="table-content">12:00AM</td>
-                                        <td class="table-content">12:00PM</td>
+                                        <td v-if="MondayAM != null" class="table-content">{{MondayAM}}</td>
+                                        <td v-if="MondayAM == null" class="table-content">---</td>
+                                        <td v-if="MondayPM != null" class="table-content">{{MondayPM}}</td>
+                                        <td v-if="MondayPM == null" class="table-content">---</td>
                                     </tr>
                                    <tr>
                                         <td class="table-content">Martes</td>
-                                        <td class="table-content">12:00AM</td>
-                                        <td class="table-content">12:00PM</td>
+                                        <td v-if="TuesdayAM != null" class="table-content">{{TuesdayAM}}</td>
+                                        <td v-if="TuesdayAM == null" class="table-content">---</td>
+                                        <td v-if="TuesdayPM != null" class="table-content">{{TuesdayPM}}</td>
+                                        <td v-if="TuesdayPM == null" class="table-content">---</td>
                                     </tr>
                                     <tr>
                                         <td class="table-content">Miércoles</td>
-                                        <td class="table-content">12:00AM</td>
-                                        <td class="table-content">12:00PM</td>
+                                        <td v-if="WednesdayAM != null" class="table-content">{{WednesdayAM}}</td>
+                                        <td v-if="WednesdayAM == null" class="table-content">---</td>
+                                        <td v-if="WednesdayPM != null" class="table-content">{{WednesdayPM}}</td>
+                                        <td v-if="WednesdayPM == null" class="table-content">---</td>
                                     </tr>
                                     <tr>
                                         <td class="table-content">Jueves</td>
-                                        <td class="table-content">12:00AM</td>
-                                        <td class="table-content">12:00PM</td>
+                                        <td v-if="ThursdayAM != null" class="table-content">{{ThursdayAM}}</td>
+                                        <td v-if="ThursdayAM == null" class="table-content">---</td>
+                                        <td v-if="ThursdayPM != null" class="table-content">{{ThursdayPM}}</td>
+                                        <td v-if="ThursdayPM == null" class="table-content">---</td>
                                     </tr>
                                     <tr>
                                         <td class="table-content">Viernes</td>
-                                        <td class="table-content">12:00AM</td>
-                                        <td class="table-content">12:00PM</td>
+                                        <td v-if="FridayAM != null" class="table-content">{{FridayAM}}</td>
+                                        <td v-if="FridayAM == null" class="table-content">---</td>
+                                        <td v-if="FridayPM != null" class="table-content">{{FridayPM}}</td>
+                                        <td v-if="FridayPM == null" class="table-content">---</td>
                                     </tr>
                                     <tr>
                                         <td class="table-content">Sábado</td>
-                                        <td class="table-content">12:00AM</td>
-                                        <td class="table-content">12:00PM</td>
+                                        <td v-if="SaturdayAM != null" class="table-content">{{SaturdayAM}}</td>
+                                        <td v-if="SaturdayAM == null" class="table-content">---</td>
+                                        <td v-if="SaturdayPM != null" class="table-content">{{SaturdayPM}}</td>
+                                        <td v-if="SaturdayPM == null" class="table-content">---</td>
                                     </tr>
 
                                 </tbody>
@@ -99,12 +113,103 @@
 </template>
 
 <script>
+import Parse from 'parse'
     export default {
         data() {
             return {
+                data:null,
+                picture:null,
+                storeName:null,
+                email:null,
+                phoneNumber:null,
+                category:null,
+                SundayAM:null,
+                SundayPM:null,
+                MondayAM:null,
+                MondayPM:null,
+                TuesdayAM:null,
+                TuesdayPM:null,
+                WednesdayAM:null,
+                WednesdayPM:null,
+                ThursdayAM:null,
+                ThursdayPM:null,
+                FridayAM:null,
+                FridayPM:null,
+                SaturdayAM:null,
+                SaturdayPM:null,
+
+                schedule:null
+
 
             }
         },
+        mounted: function()
+        {       //get data of object
+
+         if(Parse.User.current() == null)
+            {
+                this.$router.push('/HelloWorld');
+            }
+                console.log("Data", this.$route.params);
+                this.data = this.$route.params.data;
+                this.getStoreInfo();
+        },
+        methods:
+        {
+                getStoreInfo()
+                {
+                    this.picture = this.data.get('storePicture').url();
+                    this.storeName = this.data.get('Name');
+                    this.email = this.data.get('employee').get('username');
+                    this.phoneNumber = this.data.get('Phone');
+                    this.schedule = this.data.get('Schedule');
+                    this.category = this.data.get('subCategories');
+
+                    for(let i =0; i < this.schedule.length; i ++)
+                    {
+                        if(this.schedule[i].day == "Sunday")
+                        {
+                            this.SundayAM = this.schedule[i].start;
+                            this.SundayPM = this.schedule[i].end;
+                        }
+                        if(this.schedule[i].day == "Monday")
+                        {
+                            this.MondayAM = this.schedule[i].start;
+                            this.MondayPM = this.schedule[i].end;
+                        }
+                        if(this.schedule[i].day == "Tuesday")
+                        {
+                            this.TuesdayAM = this.schedule[i].start;
+                            this.TuesdayPM = this.schedule[i].end;
+                        }
+                        if(this.schedule[i].day == "Wednesday")
+                        {
+                            this.WednesdayAM = this.schedule[i].start;
+                            this.WednesdayPM = this.schedule[i].end;
+                        }
+                        if(this.schedule[i].day == "Thursday")
+                        {
+                            this.ThursdayAM = this.schedule[i].start;
+                            this.ThursdayPM = this.schedule[i].end;
+                        }
+                        if(this.schedule[i].day == "Friday")
+                        {
+                            this.FridayAM = this.schedule[i].start;
+                            this.FridayPM = this.schedule[i].end;
+
+                        }
+                        if(this.schedule[i].day == "Saturday")
+                        {   
+                            this.SaturdayAM = this.schedule[i].start;
+                            this.SaturdayPM = this.schedule[i].end;
+                        }
+                    }
+
+
+
+
+                }
+        }
     }
 </script>
 

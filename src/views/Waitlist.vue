@@ -25,6 +25,9 @@
                             <router-link class="nav-link" to="/adminDrivers"><i class="fas fa-users icon3"></i>Conductores</router-link>
                         </li>
                         <li class="nav-item">
+                        <router-link class="nav-link" to="/deliverySchedule"><i class="fas fa-align-left icon3"></i>Schedule Fee</router-link>
+                    </li>
+                        <li class="nav-item">
                             <router-link class="nav-link" to="/"><i class="fas fa-sign-out-alt icon3"></i>Logout</router-link>
                         </li>
                     </ul>
@@ -41,22 +44,24 @@
             <table class="table table-hover table-dark" style="margin-bottom: 0;">
                 <thead>
                     <tr>
-                        <th class="title-table" scope="col">#</th>
+                        <!-- <th class="title-table" scope="col">#</th> -->
                         <th class="title-table" scope="col">Zipcode</th>
                         <th class="title-table" scope="col">Pueblo</th>
+                        <th class="title-table" scope="col">DeliveryFee</th>
                         <th class="title-table" scope="col">Borrar Zipcode</th>
                     </tr>
                 </thead>
                 <tbody>
-                    <tr>
-                        <th class="table-content" scope="row">1</th>
-                        <th class="table-content">00680</th>
-                        <th class="table-content">Mayaguez</th>
+                    <tr v-for="zip in zipcodes" :key="zip">
+                        <!-- <th class="table-content" scope="row">1</th> -->
+                        <th class="table-content">{{zip.get('zipcode')}}</th>
+                        <th class="table-content">{{zip.get('city')}}</th>
+                        <th class="table-content">${{zip.get('deliveryFee')}}</th>
                         <td class="table-content">
-                            <button type="button" class="btn btn-primary delete-btn">Borrar</button>
+                            <button @click="deleteZipCode(zip)" type="button" class="btn btn-primary delete-btn">Borrar</button>
                         </td>
                     </tr>
-                    <tr>
+                    <!-- <tr>
                         <th class="table-content" scope="row">2</th>
                         <th class="table-content">00682</th>
                         <th class="table-content">Mayaguez</th>
@@ -111,7 +116,7 @@
                         <td class="table-content">
                             <button type="button" class="btn btn-primary delete-btn">Borrar</button>
                         </td>
-                    </tr>
+                    </tr> -->
                 </tbody>
             </table>
         </div>
@@ -131,19 +136,24 @@
                             <div class="col-12">
                                 <div class="category">
                                     <label class="form-label" for="exampleInputEmail1">Zipcode</label>
-                                    <input type="number" class="form-control category modal-form" aria-describedby="basic-addon1">
+                                    <input v-model="newZipCode" type="text" class="form-control category modal-form" aria-describedby="basic-addon1">
+                                </div>
+
+                                <div class="category">
+                                    <label class="form-label" for="exampleInputEmail1">DeliveryFee</label>
+                                    <input v-model="newDeliveryFee" type="number" class="form-control category modal-form" aria-describedby="basic-addon1">
                                 </div>
 
                                 <div class="category">
                                     <label class="form-label" for="exampleInputEmail1">Pueblo</label>
-                                    <input type="text" class="form-control category modal-form" aria-describedby="basic-addon1">
+                                    <input v-model="newCity" type="text" class="form-control category modal-form" aria-describedby="basic-addon1">
                                 </div>
                             </div>
                         </div>
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-dismiss="modal" style="font-family: 'Montserrat', sans-serif; font-size: 13px; height: 34px; background: #FFC93A; border: 0;">Close</button>
-                        <button type="button" class="btn btn-primary" style="font-family: 'Montserrat', sans-serif; font-size: 13px; height: 34px; background: #FD5440; border: 0;">Save changes</button>
+                        <button @click="createNewZipCode" type="button" class="btn btn-primary" style="font-family: 'Montserrat', sans-serif; font-size: 13px; height: 34px; background: #FD5440; border: 0;">Save changes</button>
                     </div>
                 </div>
             </div>
@@ -154,12 +164,68 @@
 </template>
 
 <script>
+import Parse from 'parse';
     export default {
         data() {
             return {
-                selected: null
+                selected: null,
+                zipcodes:null,
+
+                newZipCode:null,
+                newDeliveryFee:null,
+                newCity:null
+
             }
         },
+        mounted: function()
+        {
+             if(Parse.User.current() == null)
+            {
+                this.$router.push('/HelloWorld');
+            }
+            this.getAllZipCode();
+        },
+        methods:
+        {
+            getAllZipCode()
+            {
+                 Parse.Cloud.run('getAllZipCodes', { //get the user store
+                }).then (result => {
+                // console.log(result);
+                this.zipcodes = result;
+                console.log(this.zipcodes);
+                }, (error) => {
+                console.log(error);
+                });
+            },
+            deleteZipCode(zip)
+            {
+                console.log(zip);
+
+                zip.destroy().then(result=>
+                {
+                    console.log("delete");
+                    this.getAllZipCode();
+                });
+            },
+
+            createNewZipCode()
+            {
+                console.log(this.newZipCode);
+                console.log(this.newDeliveryFee);
+                console.log(this.newCity);
+                 Parse.Cloud.run('createZipCode', { //get the user store
+                 city: this.newCity,
+                 deliveryFee: parseFloat(this.newDeliveryFee),
+                 zip: this.newZipCode
+                }).then (result => {
+                console.log("Add new ZipCode");
+                this.getAllZipCode();
+                }, (error) => {
+                console.log(error);
+                });
+            }
+        }
     }
 </script>
 

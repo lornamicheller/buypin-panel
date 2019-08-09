@@ -11,9 +11,9 @@
                     <li class="nav-item">
                         <router-link class="nav-link  active" to="/adminStores" style="color: #FD5440 !important"><i class="fas fa-home icon3"></i>Tiendas</router-link>
                     </li>
-                    <li class="nav-item">
+                    <!-- <li class="nav-item">
                         <router-link class="nav-link" to="/calendar"><i class="icon3 fas fa-align-left"></i>Categorías</router-link>
-                    </li>
+                    </li> -->
                     <li class="nav-item">
                         <router-link class="nav-link" to="/PatientsInfo"><i class="fas fa-align-left icon3"></i>Órdenes</router-link>
                     </li>
@@ -39,25 +39,26 @@
                     <router-link class="nav-link2" to="/acceptStore">Solicitud</router-link>
                 </li>
             </ul>
-
-            <table class="table table-hover table-striped">
+    <p v-if="stores == null || stores == '' " style="font-size:14px; text-aling:center;"> No hay solicitudes en estos momentos.</p>
+            <table v-if="stores != null || stores != '' " class="table table-hover table-striped">
                 <thead>
                     <tr>
-                        <th class="header" scope="col">#</th>
+                        <!-- <th class="header" scope="col">#</th> -->
                         <th class="header" scope="col">Nombre de tienda</th>
                         <th class="header" scope="col">Actions</th>
                     </tr>
                 </thead>
-                <tbody>
-                    <tr>
-                        <th class="header" scope="row">1</th>
-                        <td class="content">La Curvita</td>
+                
+                <tbody >
+                    <tr v-for="store in stores" :key="store">
+                        <!-- <th class="header" scope="row">1</th> -->
+                        <td class="content">{{store.get('Name')}}</td>
                         <td class="content">
-                            <router-link to="/acceptStores"><button type="button" class="see-btn">Ver</button></router-link>
-                            <button type="button" class="delete-btn">Aprovar</button>
+                           <button @click="viewInfo(store)" type="button" class="see-btn">Ver</button>
+                            <button @click="approved(store)" type="button" class="delete-btn">Aprovar</button>
                         </td>
                     </tr>
-                    <tr>
+                    <!-- <tr>
                         <th class="header" scope="row">2</th>
                         <td class="content">Foodtruck Sushi</td>
                          <td class="content">
@@ -72,8 +73,9 @@
                                                     <router-link to="/acceptStores"><button type="button" class="see-btn">Ver</button></router-link>
                             <button type="button" class="delete-btn">Aprovar</button>
                         </td>
-                    </tr>
+                    </tr> -->
                 </tbody>
+                
             </table>
         </div>
 
@@ -81,12 +83,53 @@
 </template>
 
 <script>
+import Parse from 'parse'
     export default {
         data() {
             return {
+                stores:null
 
             }
+        },mounted: function()
+        {
+             if(Parse.User.current() == null)
+            {
+                this.$router.push('/HelloWorld');
+            }
+                this.getRequestInfo();
         },
+        methods:
+        {
+            getRequestInfo()
+            {
+                Parse.Cloud.run('getNotAppovedStore', { //get the user store
+                }).then (result => {
+                // console.log(result);
+                this.stores = result;
+                console.log(this.store);
+                }, (error) => {
+                console.log(error);
+                });
+            },
+
+            viewInfo(data)
+            {
+                this.$router.push({ name: 'acceptStores', params: { data } });
+            },
+
+            approved(data)
+            {
+                console.log(data);
+
+                data.set("isApproved", true);
+                
+                data.save().then(result=>
+                {
+                        console.log("Saved");
+                        this.getRequestInfo();
+                });
+            }
+        }
     }
 </script>
 

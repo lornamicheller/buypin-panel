@@ -24,6 +24,9 @@
                         <router-link class="nav-link" to="/adminDrivers"><i class="fas fa-users icon3"></i>Conductores</router-link>
                     </li>
                     <li class="nav-item">
+                        <router-link class="nav-link" to="/deliverySchedule"><i class="fas fa-align-left icon3"></i>Schedule Fee</router-link>
+                    </li>
+                    <li class="nav-item">
                         <router-link class="nav-link" to="/"><i class="fas fa-sign-out-alt icon3"></i>Logout</router-link>
                     </li>
                 </ul>
@@ -33,31 +36,36 @@
         <div class="container" style="margin-top: 100px; background: white; border: 1px solid rgb(192, 192, 192);">
             <ul class="nav nav-pills nav-fill nav-position">
                 <li class="nav-item second-nav">
-                    <router-link class="nav-link2" to="/adminStores">Tiendas</router-link>
+                    <router-link class="nav-link3" to="/adminStores">Tiendas</router-link>
                 </li>
                 <li class="nav-item third-nav">
-                    <router-link class="nav-link2" to="/acceptStore">Solicitud</router-link>
+                   <button @click="request" class="nav-link2">Solicitud</button>
                 </li>
             </ul>
 
             <table class="table table-hover table-striped">
                 <thead>
                     <tr>
-                        <th class="header" scope="col">#</th>
+                        <!-- <th class="header" scope="col">#</th> -->
                         <th class="header" scope="col">Nombre de tienda</th>
+                         <th class="header" scope="col">Status</th>
                         <th class="header" scope="col">Actions</th>
+                        
                     </tr>
                 </thead>
                 <tbody>
-                    <tr>
-                        <th class="header" scope="row">1</th>
-                        <td class="content">Colmado Don Carmelo</td>
+                    <tr v-for="store in allStore" :key="store">
+                        <!-- <th class="header" scope="row">{{increment()}}</th> -->
+                        <td class="content">{{store.get('Name')}}</td>
+                        <td v-if="store.get('activate') != null" class="content">{{store.get('activate')}}</td>
+                         <td v-if="store.get('activate') == null" class="content">false</td>
                         <td class="content">
-                            <router-link to="/acceptStores"><button type="button" class="see-btn">Ver</button></router-link>
-                            <button type="button" class="delete-btn">Desactivar</button>
+                            <button @click="viewInfo(store)" type="button" class="see-btn">Ver</button>
+                            <button v-if="store.get('activate') == true" @click="turnOff(store)"  type="button" class="delete-btn">Desactivar</button>
+                            <button v-if="store.get('activate') != true" @click="turnOn(store)" type="button" class="delete-btn">Activar</button>
                         </td>
                     </tr>
-                    <tr>
+                    <!-- <tr>
                         <th class="header" scope="row">2</th>
                         <td class="content">Rock N Go</td>
                         <td class="content">
@@ -136,7 +144,7 @@
                             <button type="button" class="delete-btn">Desactivar</button>
 
                         </td>
-                    </tr>
+                    </tr> -->
                 </tbody>
             </table>
         </div>
@@ -145,13 +153,93 @@
 </template>
 
 <script>
+import Parse from 'parse';
     export default {
         data() {
             return {
+                allStore:null,
+                counter: null,
+                newvalue:null,
+                finish:null
 
             }
+        },mounted: function() {
+    //   console.log(this.user);
+     if(Parse.User.current() == null)
+            {
+                this.$router.push('/HelloWorld');
+            }
+    this.counter =0;
+    this.newvalue =0;
+    this.finish =0;
+      this.gettingStores();
+      // this.createProducts();
+    },
+    methods:
+    {
+        gettingStores()
+        {
+            Parse.Cloud.run('getAllStore', { //get the user store
+             }).then (result => {
+            // console.log(result);
+            this.allStore = result;
+            console.log(this.allStore);
+            }, (error) => {
+             console.log(error);
+             });
         },
-    }
+
+        increment()
+        {
+
+            
+            this.newvalue = this.counter++;
+            console.log("counter", this.newvalue);
+            this.finish = this.newvalue;
+
+
+            return this.finish;
+        },
+
+        viewInfo(data)
+        {
+            console.log(data);
+            this.$router.push({ name: 'acceptStores', params: { data } });
+            
+        },
+
+        request()
+        {
+            this.$router.push({name: 'acceptStore'});
+        },
+
+        turnOff(store)
+        {
+            console.log(store);
+
+            store.set('activate', false);
+
+            store.save().then(result=>
+            {
+                console.log("turn off");
+                this.gettingStores();
+            });
+        },
+
+        turnOn(store)
+        {
+            console.log(store);
+
+            store.set('activate', true);
+
+            store.save().then(result=>
+            {
+                console.log("turn ON");
+                this.gettingStores();
+            });
+        }
+    },
+}
 </script>
 
 <style scoped>
@@ -218,6 +306,18 @@
         font-size: 14px;
         transition: .5s;
         text-decoration: none;
+        border-color: rgb(44, 44, 44);
+        background-color: rgb(44, 44, 44);
+    }
+
+    .nav-link3 {
+        color: white !important;
+        font-weight: 300;
+        font-size: 14px;
+        transition: .5s;
+        text-decoration: none;
+        border-color: #FD5440;
+        background-color: #FD5440;
     }
     
     .nav-position {

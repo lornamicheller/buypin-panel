@@ -34,22 +34,22 @@
             <div class="row justify-content-center">
                 <div class="col-lg-3 col-md-12 col-sm-12" style="padding: 0; background: white; ">
                     <div class="card" style=" border-top-left-radius: 0; border-top-right-radius: 0; border: 0;">
-                        <img src="../assets/driver.jpg" class="card-img-top" style="border-top-left-radius: 0; border-top-right-radius: 0;">
+                        <img :src="driverPicture" class="card-img-top" style="border-top-left-radius: 0; border-top-right-radius: 0;">
                         <div class="card-body">
-                            <h5 class="card-title">John Doe</h5>
-                            <p class="email-title2"><i class="fas fa-phone" style="margin-right: 5px;"></i> 787-837-7676</p>
-                            <p class="email-title"><i class="fas fa-envelope" style="margin-right: 5px;"></i> johndoe@test.com</p>
+                            <h5 class="card-title">{{driverName}}</h5>
+                            <p class="email-title2"><i class="fas fa-phone" style="margin-right: 5px;"></i> {{driverPhone}}</p>
+                            <p class="email-title"><i class="fas fa-envelope" style="margin-right: 5px;"></i> {{driverEmail}}</p>
                         </div>
                     </div>
                 </div>
                 <div class="col-lg-3 col-md-12 col-sm-12" style="background: white; overflow: scroll;">
                     <h1 class="licence-title">Licencia de conducir</h1>
                     <div class="position-img">
-                        <img src="../assets/images-3.jpg">
+                        <img :src="driverLicense" style=" width:300px; height:500px; object-fit:contain">
                     </div>
                     <h1 class="licence-title">Licencia de vehículo</h1>
                     <div class="position-img">
-                        <img src="../assets/vehicle-licence.png" width="300px">
+                        <img :src="carLicense" style=" width:300px; height:500px; object-fit:contain">
                     </div>
                 </div>
             </div>
@@ -58,12 +58,56 @@
 </template>
 
 <script>
+import Parse from 'parse'
     export default {
         data() {
             return {
+                driverInfo:null,
+                driverName:null,
+                driverPhone:null,
+                driverPicture:null,
+                driverEmail:null,
+                driverLicense:null,
+                carLicense:null,
+                
 
             }
         },
+        mounted: function()
+        {
+             if(Parse.User.current() == null)
+            {
+                this.$router.push('/HelloWorld');
+            }
+            
+            this.driverInfo = this.$route.params.data;
+            console.log(this.driverInfo);
+                this.getDriverInfo();
+                this.carInfo();
+        },
+        methods:
+        {
+            getDriverInfo()
+            {
+                this.driverPicture = this.driverInfo.get('driverLicensePicture').url();
+                this.driverName = this.driverInfo.get('fullName');
+                this.driverPhone = this.driverInfo.get('phoneNumber');
+                this.driverEmail = this.driverInfo.get('username');
+                this.driverLicense = this.driverInfo.get('licensePic').url();
+
+            },
+            carInfo()
+            {
+                 Parse.Cloud.run('getCarInfo', { //get the user store
+                  userId: this.driverInfo.id
+                }).then (result => {
+                console.log(result);
+                this.carLicense = result.get('licensePic').url();
+                }, (error) => {
+                console.log(error);
+                });
+            }
+        }
     }
 </script>
 

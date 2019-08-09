@@ -24,6 +24,9 @@
                         <router-link class="nav-link" to="/adminDrivers"><i class="fas fa-users icon3"></i>Conductores</router-link>
                     </li>
                     <li class="nav-item">
+                        <router-link class="nav-link" to="/deliverySchedule"><i class="fas fa-align-left icon3"></i>Schedule Fee</router-link>
+                    </li>
+                    <li class="nav-item">
                         <router-link class="nav-link" to="/"><i class="fas fa-sign-out-alt icon3"></i>Logout</router-link>
                     </li>
                 </ul>
@@ -34,7 +37,7 @@
             <table class="table table-dark">
                 <thead>
                     <tr>
-                        <th class="table-title" scope="col">#</th>
+                        <!-- <th class="table-title" scope="col">#</th> -->
                         <th class="table-title" scope="col">Email Cliente</th>
                         <th class="table-title" scope="col">Fecha de compra</th>
                         <th class="table-title" scope="col">Nombre de cliente</th>
@@ -43,18 +46,18 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr>
-                        <th class="table-content" scope="row">1</th>
-                        <td class="table-content">email@test.com</td>
-                        <td class="table-content">1 - Agosto - 19</td>
-                        <td class="table-content">Jane Doe</td>
-                        <td class="table-content">787-456-5353</td>
+                    <tr v-for="order in allOrders" :key="order">
+                        <!-- <th class="table-content" scope="row">1</th> -->
+                        <td class="table-content">{{order.get("user").get("username")}}</td>
+                        <td class="table-content">{{order.get("date")}}</td>
+                        <td class="table-content">{{order.get("user").get("fullName")}}</td>
+                        <td class="table-content">{{order.get("user").get("phoneNumber")}}</td>
                         <td class="table-content">
-                            <button type="button" data-toggle="modal" data-target="#exampleModalCenter" class="see-btn">Ver</button>
-                            <button type="button" class="delete-btn">Borrar</button>
+                            <button @click="viewInfo(order)" type="button" data-toggle="modal" data-target="#exampleModalCenter" class="see-btn">Ver</button>
+                            <button @click="deleteOrder(order)" type="button" class="delete-btn">Borrar</button>
                         </td>
                     </tr>
-                    <tr>
+                    <!-- <tr>
                         <th class="table-content" scope="row">2</th>
                         <td class="table-content">email@test.com</td>
                         <td class="table-content">1 - Agosto - 19</td>
@@ -75,9 +78,10 @@
                             <button type="button" data-toggle="modal" data-target="#exampleModalCenter" class="see-btn">Ver</button>
                             <button type="button" class="delete-btn">Borrar</button>
                         </td>
-                    </tr>
+                    </tr> -->
                 </tbody>
             </table>
+            <p v-if="allOrders == null || allOrders == '' " style="font-size:14px; text-align:center;">No hay ordenes disponibles.</p>
         </div>
 
         <!-- modal see order info -->
@@ -92,27 +96,27 @@
                     </div>
                     <div class="modal-body">
                         <h1 class="modal-title-address">Dirección</h1>
-                        <p class="address-info"><b>Address:</b> Angora Central Park</p>
-                        <p class="address-info"><b>Ciudad:</b> Aguadilla</p>
-                        <p class="address-info"><b>Zipcode:</b> 00603</p>
+                        <p class="address-info"><b>Address:</b> {{address}}</p>
+                        <p class="address-info"><b>Ciudad:</b> {{city}}</p>
+                        <p class="address-info"><b>Zipcode:</b> {{zipcode}}</p>
                     </div>
                      <div class="modal-body">
                         <h1 class="modal-title-address">Información de Pago</h1>
                         <p class="address-info"><b>Tarjeta:</b> Visa</p>
-                        <p class="address-info"><b>Fecha de vencimiento:</b> 1123</p>
-                        <p class="address-info"><b>Nombre en tarjeta:</b> Jane Doe</p>
+                        <p class="address-info"><b>Fecha de vencimiento:</b> {{date}}</p>
+                        <p class="address-info"><b>Nombre en tarjeta:</b> {{cardName}}</p>
                         <p class="address-info"><b>Número de referencia:</b> 763673</p>
-                        <p class="address-info"><b>Total:</b> $11.63</p>
+                        <p class="address-info"><b>Total:</b> ${{total}}</p>
                     </div>
                     <div class="modal-body" style="height: 300px; overflow: scroll;">
                         <div class="row justify-content-center">
-                            <div class="col-6" style="margin-bottom: 20px;">
-                                <img class="center-img" src="../assets/032731.jpg" width="100px" height="100px">
-                                <p class="address-info2"><b>Nombre de producto:</b> Coca Cola</p>
-                                <p class="address-info2"><b>Precio:</b> $1.63</p>
-                                <p class="address-info2"><b>Cantidad de compra:</b> 1</p>
+                            <div v-for="item in items" :key="item" class="col-6" style="margin-bottom: 20px;">
+                                <img class="center-img" :src="item.prodImage" width="100px" height="100px">
+                                <p class="address-info2"><b>Nombre de producto:</b>{{item.prodname}}</p>
+                                <p class="address-info2"><b>Precio:</b> ${{item.prodPrice}}</p>
+                                <p class="address-info2"><b>Cantidad de compra:</b> {{item.quantityNumber}}</p>
                             </div>
-                            <div class="col-6">
+                            <!-- <div class="col-6">
                                 <img class="center-img" src="../assets/19crimes.jpg" width="100px" height="100px">
                                 <p class="address-info2"><b>Nombre de producto:</b> Coca Cola</p>
                                 <p class="address-info2"><b>Precio:</b> $1.63</p>
@@ -129,7 +133,7 @@
                                 <p class="address-info2"><b>Nombre de producto:</b> Coca Cola</p>
                                 <p class="address-info2"><b>Precio:</b> $1.63</p>
                                 <p class="address-info2"><b>Cantidad de compra:</b> 1</p>
-                            </div>
+                            </div> -->
                         </div>
                     </div>
                     <div class="modal-footer">
@@ -145,12 +149,69 @@
 </template>
 
 <script>
+import Parse from 'parse';
     export default {
         data() {
             return {
-
+                allOrders:null,
+                address:null,
+                city:null,
+                zipcode:null,
+                card:null,
+                date:null,
+                cardName:null,
+                referenceNumber:null,
+                total:null,
+                items:null
             }
         },
+        mounted: function()
+        {
+             if(Parse.User.current() == null)
+            {
+                this.$router.push('/HelloWorld');
+            }
+
+            this.getAllOrders();
+        },
+        methods: 
+        {
+            getAllOrders()
+            {
+                Parse.Cloud.run('getAllOrders', { //get the user store
+                }).then (result => {
+                // console.log(result);
+                this.allOrders = result;
+                console.log(this.allOrders);
+                }, (error) => {
+                console.log(error);
+                });
+            },
+
+            viewInfo(data)
+            {
+                this.address = data.get('address').get('Address');
+                this.city = data.get('address').get('city');
+                this.zipcode = data.get('address').get('zipcode');
+
+                this.card = data.get('user').get('stripeCustomer');
+                console.log(this.card);
+                this.cardName = data.get('user').get('fullName');
+                this.date = data.get("date");
+                this.total = data.get("orderTotal");
+                this.items = data.get("items");
+            },
+            deleteOrder(data)
+            {
+                console.log(data);
+
+                data.destroy().then(result=>
+                {
+                    console.log("DELETE");
+                    this.getAllOrders();
+                });
+            }
+        }
     }
 </script>
 <style scoped>

@@ -24,6 +24,9 @@
                         <router-link class="nav-link" to="/adminDrivers" style="color: #FD5440 !important"><i class="fas fa-users icon3"></i>Conductores</router-link>
                     </li>
                     <li class="nav-item">
+                        <router-link class="nav-link" to="/deliverySchedule"><i class="fas fa-align-left icon3"></i>Schedule Fee</router-link>
+                    </li>
+                    <li class="nav-item">
                         <router-link class="nav-link" to="/"><i class="fas fa-sign-out-alt icon3"></i>Logout</router-link>
                     </li>
                 </ul>
@@ -43,21 +46,22 @@
             <table class="table table-hover table-striped">
                 <thead>
                     <tr>
-                        <th class="header" scope="col">#</th>
+                        <!-- <th class="header" scope="col">#</th> -->
                         <th class="header" scope="col">Nombre</th>
                         <th class="header" scope="col">Actions</th>
                     </tr>
                 </thead>
                 <tbody>
-                    <tr>
-                        <th class="header" scope="row">1</th>
-                        <td class="content">Luis Sanchez</td>
+                    <tr v-for="driver in drivers" :key="driver">
+                        <!-- <th class="header" scope="row">1</th> -->
+                        <td class="content">{{driver.get("fullName")}}</td>
                         <td class="content">
-                            <router-link to="/driversProfile"><button type="button" class="see-btn">Ver</button></router-link>
-                            <button type="button" class="delete-btn">Desactivar</button>
+                            <button @click="viewInfo(driver)" type="button" class="see-btn">Ver</button>
+                            <button v-if="driver.get('isActivate') == true" @click="turnOff(driver)" type="button" class="delete-btn">Desactivar</button>
+                            <button v-if="driver.get('isActivate') != true" @click="turnOn(driver)" type="button" class="delete-btn">Activar</button>
                         </td>
                     </tr>
-                    <tr>
+                    <!-- <tr>
                         <th class="header" scope="row">2</th>
                         <td class="content">Carolina Alicea</td>
                         <td class="content">
@@ -72,7 +76,7 @@
                             <router-link to="/driversProfile"><button type="button" class="see-btn">Ver</button></router-link>
                             <button type="button" class="delete-btn">Desactivar</button>
                         </td>
-                    </tr>
+                    </tr> -->
                 </tbody>
             </table>
         </div>
@@ -81,12 +85,72 @@
 </template>
 
 <script>
+import Parse from 'parse';
     export default {
         data() {
             return {
-
+                drivers:null
             }
         },
+        mounted: function()
+        {
+             if(Parse.User.current() == null)
+            {
+                this.$router.push('/HelloWorld');
+            }
+
+            this.getDriversInfo();
+        },
+        methods: 
+        {
+            getDriversInfo()
+            {
+                 Parse.Cloud.run('getDrivers', { //get the user store
+                }).then (result => {
+                // console.log(result);
+                this.drivers = result;
+                console.log(this.drivers);
+                }, (error) => {
+                console.log(error);
+                });
+            },
+            viewInfo(data)
+            {
+                this.$router.push({ name: 'driversProfile', params: { data } });
+            },
+            turnOn(data)
+            {
+
+                Parse.Cloud.run('changeStatusActivate', { //get the user store
+                userId: data.id,
+                status: true
+                }).then (result => {
+                    console.log(result);
+                    this.getDriversInfo();
+                }, (error) => {
+                console.log(error);
+                });
+            },
+            turnOff(data)
+            {
+                console.log(data.id);
+                Parse.Cloud.run('changeStatusActivate', { //get the user store
+                userId: data.id,
+                status: false
+                }).then (result => {
+                    console.log(result);
+                    this.getDriversInfo();
+                }, (error) => {
+                console.log(error);
+                });
+
+                
+
+
+
+            }
+
+        }
     }
 </script>
 

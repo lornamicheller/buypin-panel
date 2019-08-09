@@ -21,7 +21,7 @@
                         <router-link class="nav-link" to="/storeProfile"><i class="fas fa-map-marker-alt icon3"></i>Perfil de Tienda</router-link>
                     </li>
                     <li class="nav-item">
-                        <router-link class="nav-link" to="/"><i class="fas fa-sign-out-alt icon3"></i>Logout</router-link>
+                        <button class="logout"><i class="fas fa-sign-out-alt icon3"></i>Logout</button>
                     </li>
                 </ul>
             </div>
@@ -36,23 +36,23 @@
             <table class="table table-hover table-dark" style="margin-bottom: 0;">
                 <thead>
                     <tr>
-                        <th class="title-table" scope="col">#</th>
+                        <!-- <th class="title-table" scope="col">#</th> -->
                         <th class="title-table" scope="col">Nombre de sub-categoría</th>
                         <th class="title-table" scope="col">Borrar Categoría</th>
                     </tr>
                 </thead>
                 <tbody>
-                    <tr>
-                        <th class="table-content" scope="row">1</th>
+                    <tr v-for="prod in product" :key="prod">
+                        <!-- <th class="table-content" scope="row">1</th> -->
                         <td class="table-content">
-                            Alcohol
+                            {{prod.get('subCategory')}}
                         </td>
                         <td class="table-content">
-                            <button type="button" class="btn btn-primary delete-btn">Borrar</button>
+                            <button type="button" @click="deleteItem(prod)" class="btn btn-primary delete-btn">Borrar</button>
                         </td>
                     </tr>
 
-                    <tr>
+                    <!-- <tr>
                         <th class="table-content" scope="row">2</th>
                         <td class="table-content">
                             Higiene
@@ -60,9 +60,9 @@
                         <td class="table-content">
                             <button type="button" class="btn btn-primary delete-btn">Borrar</button>
                         </td>
-                    </tr>
+                    </tr> -->
 
-                    <tr>
+                    <!-- <tr>
                         <th class="table-content" scope="row">3</th>
                         <td class="table-content">
                             Refrigerios
@@ -70,8 +70,8 @@
                         <td class="table-content">
                             <button type="button" class="btn btn-primary delete-btn">Borrar</button>
                         </td>
-                    </tr>
-
+                    </tr> -->
+<!-- 
                     <tr>
                         <th class="table-content" scope="row">4</th>
                         <td class="table-content">
@@ -80,7 +80,7 @@
                         <td class="table-content">
                             <button type="button" class="btn btn-primary delete-btn">Borrar</button>
                         </td>
-                    </tr>
+                    </tr> -->
 
                 </tbody>
             </table>
@@ -101,7 +101,7 @@
                             <div class="col-12">
                                 <div class="category">
                                     <label class="form-label" for="exampleInputEmail1">Nombre de categoría</label>
-                                    <input type="text" class="form-control modal-form" aria-describedby="basic-addon1">
+                                    <input v-model="newSubCategory" type="text" class="form-control modal-form" aria-describedby="basic-addon1">
                                 </div>
 
                             </div>
@@ -109,7 +109,7 @@
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-dismiss="modal" style="font-family: 'Montserrat', sans-serif; font-size: 13px; height: 34px; background: #FFC93A; border: 0;">Close</button>
-                        <button type="button" class="btn btn-primary" style="font-family: 'Montserrat', sans-serif; font-size: 13px; height: 34px; background: #FD5440; border: 0;">Save changes</button>
+                        <button @click="createSubCategory" type="button" class="btn btn-primary" style="font-family: 'Montserrat', sans-serif; font-size: 13px; height: 34px; background: #FD5440; border: 0;">Save changes</button>
                     </div>
                 </div>
             </div>
@@ -119,12 +119,94 @@
 </template>
 
 <script>
+import Parse from "parse";
     export default {
         data() {
             return {
-
+                storeId:null,
+                product:null,
+                newSubCategory:''
             }
         },
+         mounted: function() {
+            // console.log(this.user);
+             if(Parse.User.current() == null)
+            {
+                this.$router.push('/HelloWorld');
+            }
+            this.getSubCategory();
+            console.log(Parse.User.current());
+    },
+    methods: {
+        getSubCategory()
+        {
+
+
+               Parse.Cloud.run("getStoreId",
+                 {
+                    userId: Parse.User.current().id
+                    }).then((result) => {
+                    console.log(result);
+                    this.storeId = result.id;
+                    console.log(this.storeId);
+                    }, (error) =>{
+                    console.log(error);
+                 });
+
+
+                  Parse.Cloud.run("getSubCategory",
+                 {
+                    userId: Parse.User.current().id
+                    }).then((result) => {
+                    console.log(result);
+                    this.product = result;
+                    this.storeId = this.product.get("storeId").id;
+                    console.log(this.storeId);
+                    console.log(this.product);
+                    }, (error) =>{
+                    console.log(error);
+                 });
+
+                
+
+        },
+         logOut() 
+         {
+            Parse.User.logOut().then((resp) => {
+            console.log('Logged out successfully', resp);
+            this.openPage();
+            }, err => {
+            console.log('Error logging out', err);
+
+
+            });
+        },
+
+        deleteItem(item)
+        {
+          item.destroy().then((result)=>
+            {
+                console.log("Destroy");
+                this.getSubCategory();
+
+            });
+        },
+
+        createSubCategory()
+        {
+              Parse.Cloud.run("createSubCategory",
+                 {
+                    userId: Parse.User.current().id,
+                    storeId: this.storeId,
+                    subCategory: this.newSubCategory
+                    }).then((result) => {
+                    console.log(result);
+                    this.getSubCategory();
+                    }, (error) =>{
+                    console.log(error);
+                 });
+        }
+    },
     }
 </script>
 
@@ -147,6 +229,19 @@
         /* letter-spacing: 1px; */
         margin-left: 20px;
         margin-right: 20px;
+        transition: .5s;
+    }
+
+    .logout
+    {
+      background-color: #1e1e1e !important;
+      border-color: #1e1e1e !important;;
+      color:white;
+      margin-top: 5px;
+    }
+
+    .logout:hover{
+      color: #FD5440 !important;
         transition: .5s;
     }
     
