@@ -1,10 +1,14 @@
 <template>
   <div>
     <div class="container-fluid log-in-bg">
-      <div class="container logo">
-        <img src="../assets/buypin-logo.png" class="logo" />
-      </div>
       <div class="container center-div">
+         <div class="container logo">
+        <div class="row justify-content-center">
+          <div class="col-12">
+            <img src="../assets/buypin-logo.png" class="logo" />
+          </div>
+        </div>
+      </div>
         <div class="row justify-content-center">
           <div class="col-lg-6 col-md-7 col-sm-12 col-xs-12">
             <div class="card">
@@ -111,21 +115,11 @@ export default {
   background-size: cover;
 }
 
-.center-div {
-  position: absolute;
-  top: 50%;
-  right: 0;
-  left: 0;
-  margin-left: auto;
-  margin-right: auto;
-  margin-top: -25px;
-}
 
 .logo {
   width: 300px;
-  height: 300px;
+  height: 200px;
   object-fit: contain;
-  padding-top: 150px;
 }
 
 .card {
@@ -141,6 +135,10 @@ export default {
   font-family: "Montserrat", sans-serif;
 
   font-size: 25px;
+}
+
+.center-div {
+  padding-top: 50px;
 }
 
 .icon {

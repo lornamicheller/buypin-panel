@@ -21,6 +21,11 @@
                         <router-link class="nav-link" to="/storeProfile"><i class="fas fa-map-marker-alt icon3"></i>Perfil de Tienda</router-link>
                     </li>
                     <li class="nav-item">
+                        <router-link class="nav-link" to="/storeReports">
+                        <i class="fas fa-list icon3"></i>Reportes
+                        </router-link>
+                    </li>
+                    <li class="nav-item">
                         <button class="logout"><i class="fas fa-sign-out-alt icon3"></i>Logout</button>
                     </li>
                 </ul>
@@ -225,7 +230,7 @@ import Parse from "parse";
     .nav-link {
         color: white !important;
         font-weight: 200;
-        font-size: 17px;
+        font-size: 13px;
         /* letter-spacing: 1px; */
         margin-left: 20px;
         margin-right: 20px;

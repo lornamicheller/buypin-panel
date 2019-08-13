@@ -46,7 +46,7 @@
     .nav-link {
         color: white !important;
         font-weight: 200;
-        font-size: 17px;
+        font-size: 13px;
         /* letter-spacing: 1px; */
     }
     

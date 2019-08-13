@@ -1,6 +1,6 @@
 <template>
-  <div>
-  <nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <div>
+        <nav class="navbar navbar-expand-lg navbar-light bg-light">
             <img class="logo" src="../assets/logo prueba.png">
             <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarTogglerDemo02" aria-controls="navbarTogglerDemo02" aria-expanded="false" aria-label="Toggle navigation">
                 <i class="fas fa-bars"></i>
@@ -21,12 +21,16 @@
                         <router-link class="nav-link" to="/storeProfile"><i class="fas fa-map-marker-alt icon3"></i>Perfil de Tienda</router-link>
                     </li>
                     <li class="nav-item">
+                        <router-link class="nav-link" to="/storeReports">
+                            <i class="fas fa-list icon3"></i>Reportes
+                        </router-link>
+                    </li>
+                    <li class="nav-item">
                         <button class="logout" @click="logOut()"><i class="fas fa-sign-out-alt icon3"></i>Logout</button>
                     </li>
                 </ul>
             </div>
         </nav>
-
 
         <div class="container-fluid" style="padding: 0;">
             <table class="table table-dark">
@@ -95,7 +99,7 @@
                         <p class="address-info"><b>Ciudad:</b>{{city}}</p>
                         <p class="address-info"><b>Zipcode:</b>{{zipcode}}</p>
                     </div>
-                     <div class="modal-body">
+                    <div class="modal-body">
                         <h1 class="modal-title-address">Información de Pago</h1>
                         <p class="address-info"><b>Tarjeta:</b> Visa</p>
                         <!-- <p class="address-info"><b>Fecha de vencimiento:</b> 1123</p> -->
@@ -139,104 +143,95 @@
             </div>
         </div>
         <!-- modal see order info -->
-  </div>
+    </div>
 </template>
 
 <script>
-import Parse from 'parse'
-  export default {
-    data() {
-      return {
-          orders:null,
+    import Parse from 'parse'
+    export default {
+        data() {
+                return {
+                    orders: null,
 
-          // data
+                    // data
 
-          address:'',
-          city: '',
-          zipcode: '',
-          card: '',
-          name:'',
-          referenceNumber:'',
-          total: '',
-          data:null,
+                    address: '',
+                    city: '',
+                    zipcode: '',
+                    card: '',
+                    name: '',
+                    referenceNumber: '',
+                    total: '',
+                    data: null,
 
+                }
+            }, mounted: function() {
 
-      
-      }
-    },mounted: function() {
-
-         if(Parse.User.current() == null)
-            {
-                this.$router.push('/HelloWorld');
-            }
-      console.log(this.user);
-      this.gettingOrders();
-      // this.createProducts();
-    },
-    methods:
-    {
-        gettingOrders()
-        {
-            
-             Parse.Cloud.run('getOrders', { //get the user store
-                employeeId: Parse.User.current().id,
-                }).then (result => {
-                console.log(result);
-                this.orders = result;
-
-            }, (error) => {
-                console.log(error);
-            });
-        },
-         logOut() {
-            Parse.User.logOut().then((resp) => {
-            console.log('Logged out successfully', resp);
-            // this.openPage();
-             this.$router.push("/"); 
-            }, err => {
-            console.log('Error logging out', err);
-
-
-            });
-         },
-
-        seeOrder(order)
-        {
-            this.data = [];
-            console.log(order);
-            //address
-            this.address = order.get("address").get("Address");
-            console.log(this.address);
-            this.city = order.get("address").get("city");
-            console.log(this.city);
-            this.zipcode = order.get("address").get("zipcode");
-            console.log(this.zipcode);
-
-            //card
-
-           this.name = order.get("user").get("fullName");
-           console.log(this.name);
-           this.total = order.get("orderTotal");
-           console.log(this.total);
-
-           this.data = order.get('items');
-           console.log(this.data);
-            
-        },
-
-        deleteItem(item)
-        {
-            console.log("Item", item);
-            item.destroy().then((result)=>
-            {
-                console.log("Destroy");
+                if (Parse.User.current() == null) {
+                    this.$router.push('/HelloWorld');
+                }
+                console.log(this.user);
                 this.gettingOrders();
+                // this.createProducts();
+            },
+            methods: {
+                gettingOrders() {
 
-            });
-        }
+                        Parse.Cloud.run('getOrders', { //get the user store
+                            employeeId: Parse.User.current().id,
+                        }).then(result => {
+                            console.log(result);
+                            this.orders = result;
 
-    },
-  }
+                        }, (error) => {
+                            console.log(error);
+                        });
+                    },
+                    logOut() {
+                        Parse.User.logOut().then((resp) => {
+                            console.log('Logged out successfully', resp);
+                            // this.openPage();
+                            this.$router.push("/");
+                        }, err => {
+                            console.log('Error logging out', err);
+
+                        });
+                    },
+
+                    seeOrder(order) {
+                        this.data = [];
+                        console.log(order);
+                        //address
+                        this.address = order.get("address").get("Address");
+                        console.log(this.address);
+                        this.city = order.get("address").get("city");
+                        console.log(this.city);
+                        this.zipcode = order.get("address").get("zipcode");
+                        console.log(this.zipcode);
+
+                        //card
+
+                        this.name = order.get("user").get("fullName");
+                        console.log(this.name);
+                        this.total = order.get("orderTotal");
+                        console.log(this.total);
+
+                        this.data = order.get('items');
+                        console.log(this.data);
+
+                    },
+
+                    deleteItem(item) {
+                        console.log("Item", item);
+                        item.destroy().then((result) => {
+                            console.log("Destroy");
+                            this.gettingOrders();
+
+                        });
+                    }
+
+            },
+    }
 </script>
 
 <style scoped>
@@ -254,7 +249,7 @@ import Parse from 'parse'
     .nav-link {
         color: white !important;
         font-weight: 200;
-        font-size: 17px;
+        font-size: 13px;
         /* letter-spacing: 1px; */
         margin-left: 20px;
         margin-right: 20px;
@@ -296,7 +291,7 @@ import Parse from 'parse'
         color: #FFC93A;
         margin-right: 10px;
     }
-
+    
     .table-title {
         font-family: 'Montserrat', sans-serif;
         font-weight: 500;
@@ -328,24 +323,24 @@ import Parse from 'parse'
         font-weight: 400;
         width: 100px;
     }
-
+    
     .modal-title-address {
         font-size: 15px;
         font-family: 'Montserrat', sans-serif;
     }
-    .logout
-    {
-      background-color: #1e1e1e !important;
-      border-color: #1e1e1e !important;;
-      color:white;
-      margin-top: 5px;
+    
+    .logout {
+        background-color: #1e1e1e !important;
+        border-color: #1e1e1e !important;
+        color: white;
+        margin-top: 5px;
     }
-
-    .logout:hover{
-      color: #FD5440 !important;
+    
+    .logout:hover {
+        color: #FD5440 !important;
         transition: .5s;
     }
-
+    
     .address-info {
         font-size: 13px;
         font-family: 'Montserrat', sans-serif;
@@ -353,8 +348,8 @@ import Parse from 'parse'
         color: rgb(143, 143, 143);
         margin: 2px;
     }
-
-     .address-info2 {
+    
+    .address-info2 {
         font-size: 13px;
         font-family: 'Montserrat', sans-serif;
         margin: 0;
@@ -362,7 +357,7 @@ import Parse from 'parse'
         margin: 2px;
         text-align: center;
     }
-
+    
     .center-img {
         display: block;
         margin-left: auto;

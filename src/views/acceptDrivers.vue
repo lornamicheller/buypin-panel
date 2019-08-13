@@ -154,7 +154,7 @@ import Parse from 'parse'
     .nav-link {
         color: white !important;
         font-weight: 200;
-        font-size: 17px;
+        font-size: 13px;
         /* letter-spacing: 1px; */
         margin-left: 20px;
         margin-right: 20px;
@@ -164,7 +164,7 @@ import Parse from 'parse'
     .nav-link:hover {
         color: #FD5440 !important;
         font-weight: 200;
-        font-size: 16px;
+        font-size: 14px;
         /* letter-spacing: 1px; */
         margin-left: 20px;
         margin-right: 20px;

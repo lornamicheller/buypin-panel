@@ -37,6 +37,11 @@
             </router-link>
           </li>
           <li class="nav-item">
+            <router-link class="nav-link" to="/storeReports">
+              <i class="fas fa-list icon3"></i>Reportes
+            </router-link>
+          </li>
+          <li class="nav-item">
             <button class="logout" @click="logOut()">
               <i class="fas fa-sign-out-alt icon3"></i>Logout
             </button>
@@ -454,7 +459,7 @@ Main();
 .nav-link {
   color: white !important;
   font-weight: 200;
-  font-size: 17px;
+  font-size: 13px;
   /* letter-spacing: 1px; */
   margin-left: 20px;
   margin-right: 20px;

@@ -1,6 +1,6 @@
 <template>
     <div style="background: #272727; height: 100vh; overflow: scroll;">
-        <nav class="navbar navbar-expand-lg navbar-light bg-light">
+       <nav class="navbar navbar-expand-lg navbar-light bg-light">
             <img class="logo" src="../assets/logo prueba.png">
             <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarTogglerDemo02" aria-controls="navbarTogglerDemo02" aria-expanded="false" aria-label="Toggle navigation">
                 <i class="fas fa-bars"></i>
@@ -11,9 +11,9 @@
                     <li class="nav-item">
                         <router-link class="nav-link  active" to="/adminStores" style="color: #FD5440 !important"><i class="fas fa-home icon3"></i>Tiendas</router-link>
                     </li>
-                    <!-- <li class="nav-item">
+                    <li class="nav-item">
                         <router-link class="nav-link" to="/calendar"><i class="icon3 fas fa-align-left"></i>Categorías</router-link>
-                    </li> -->
+                    </li>
                     <li class="nav-item">
                         <router-link class="nav-link" to="/PatientsInfo"><i class="fas fa-align-left icon3"></i>Órdenes</router-link>
                     </li>
@@ -22,6 +22,12 @@
                     </li>
                     <li class="nav-item">
                         <router-link class="nav-link" to="/adminDrivers"><i class="fas fa-users icon3"></i>Conductores</router-link>
+                    </li>
+                    <li class="nav-item">
+                        <router-link class="nav-link" to="/deliverySchedule"><i class="fas fa-align-left icon3"></i>Schedule Fee</router-link>
+                    </li>
+                    <li class="nav-item">
+                        <router-link class="nav-link" to="/adminReports"><i class="fas fa-list icon3"></i>Reportes</router-link>
                     </li>
                     <li class="nav-item">
                         <router-link class="nav-link" to="/"><i class="fas fa-sign-out-alt icon3"></i>Logout</router-link>
@@ -148,7 +154,7 @@ import Parse from 'parse'
     .nav-link {
         color: white !important;
         font-weight: 200;
-        font-size: 17px;
+        font-size: 13px;
         /* letter-spacing: 1px; */
         margin-left: 20px;
         margin-right: 20px;

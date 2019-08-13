@@ -25,8 +25,11 @@
                             <router-link class="nav-link" to="/adminDrivers"><i class="fas fa-users icon3"></i>Conductores</router-link>
                         </li>
                         <li class="nav-item">
-                        <router-link class="nav-link" to="/deliverySchedule"><i class="fas fa-align-left icon3"></i>Schedule Fee</router-link>
-                    </li>
+                            <router-link class="nav-link" to="/deliverySchedule"><i class="fas fa-align-left icon3"></i>Schedule Fee</router-link>
+                        </li>
+                        <li class="nav-item">
+                            <router-link class="nav-link" to="/adminReports"><i class="fas fa-list icon3"></i>Reportes</router-link>
+                        </li>
                         <li class="nav-item">
                             <router-link class="nav-link" to="/"><i class="fas fa-sign-out-alt icon3"></i>Logout</router-link>
                         </li>
@@ -244,7 +247,7 @@ import Parse from 'parse';
     .nav-link {
         color: white !important;
         font-weight: 200;
-        font-size: 17px;
+        font-size: 13px;
         /* letter-spacing: 1px; */
         margin-left: 20px;
         margin-right: 20px;
